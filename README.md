@@ -93,19 +93,31 @@ docker build -t attrition-predictor .
 docker run -p 8000:8000 attrition-predictor
 ```
 
-The image only copies `src/` and `models/` — it serves a pre-trained model,
-it doesn't train one. Build after running `train.py` (CI does this
-automatically: it trains, tests, uploads the model as a build artifact, then
-a second job downloads it and builds the image).
+The image trains the model itself during the build (`RUN python src/train.py`
+in the `Dockerfile`) — training is deterministic (fixed `random_state`), so
+the image is self-contained: no binary model artifact needs to be committed
+or uploaded separately, and `docker build` alone produces a ready-to-serve
+image. `$PORT` is read at container start (falls back to 8000), so the same
+image works locally and on PaaS hosts like Render that inject their own port.
 
 ## CI/CD
 
 `.github/workflows/ci.yml`, two jobs:
 1. **lint-and-test** — ruff lint, train the model, run pytest (including the
-   quality gate), upload `models/` as a build artifact.
-2. **docker-build** — download that artifact, build the Docker image.
+   recall/accuracy quality gate).
+2. **docker-build** — build the Docker image (which retrains the same,
+   deterministic model internally).
 
-A model that fails the recall/accuracy gate never reaches the Docker build.
+A model that fails the quality gate fails the build before Docker is
+even touched.
+
+## Deployment (Render)
+
+`render.yaml` is a Render Blueprint — push this repo to GitHub, then in the
+Render dashboard: **New + → Blueprint → connect the repo**. Render reads
+`render.yaml`, builds `Dockerfile`, and deploys a free-tier web service with
+`/health` as the health check path. No manual environment configuration
+needed. Once live, the dashboard is at `https://<your-service>.onrender.com/demo`.
 
 ## Power BI dashboard
 

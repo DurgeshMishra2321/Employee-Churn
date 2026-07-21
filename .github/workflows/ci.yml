@@ -29,23 +29,14 @@ jobs:
       - name: Run tests (data checks, manual-vs-sklearn metrics, model quality gate, API contract)
         run: pytest -v
 
-      - name: Upload trained model artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: model
-          path: models/
-
   docker-build:
     needs: lint-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download trained model artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: model
-          path: models/
-
+      # The image trains the model itself during the build (see Dockerfile) —
+      # the quality gate above already vetted that this exact, deterministic
+      # training run meets the recall/accuracy bar before we get here.
       - name: Build Docker image
         run: docker build -t churn-predictor:${{ github.sha }} .
