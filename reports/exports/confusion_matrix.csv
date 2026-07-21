@@ -1,0 +1,5 @@
+actual,predicted,count
+No,No,192
+No,Yes,55
+Yes,No,15
+Yes,Yes,32

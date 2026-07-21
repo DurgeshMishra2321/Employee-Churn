@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+mlruns/
+mlflow.db
+models/*.joblib
+reports/exports/prediction_log.csv
+.venv/
+venv/
