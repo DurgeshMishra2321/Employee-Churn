@@ -1,3 +1,13 @@
+---
+title: Employee Attrition Predictor
+emoji: 📊
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8000
+pinned: false
+---
+
 # Employee Attrition Predictor
 
 A binary classifier that predicts whether an employee is about to leave,
