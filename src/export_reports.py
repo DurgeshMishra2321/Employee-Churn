@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from data_prep import ALL_FEATURES, CATEGORICAL_FEATURES, TARGET, build_dataset, clean, engineer_features, load_raw
+from data_prep import TARGET, build_dataset, clean, engineer_features, load_raw
 from evaluate import manual_confusion_matrix, manual_metrics, manual_roc_auc
 
 EXPORT_DIR = "reports/exports"

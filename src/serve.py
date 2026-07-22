@@ -20,7 +20,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, ConfigDict, Field
 
-from data_prep import ALL_FEATURES, CATEGORICAL_FEATURES, NUMERIC_FEATURES
+from data_prep import ALL_FEATURES, NUMERIC_FEATURES
 from recommend import generate_recommendations
 
 MODEL_PATH = os.environ.get("MODEL_PATH", "models/model.joblib")
